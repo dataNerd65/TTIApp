@@ -143,12 +143,13 @@ class _SignUpPanelState extends State<_SignUpPanel> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Account created! Please log in.')),
       );
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 700));
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoginPage()),
       );
+      return;
     } on FirebaseAuthException catch (e) {
       String msg = 'Sign up failed!';
       if (e.code == 'email-already-in-use') {
@@ -213,7 +214,7 @@ class _SignUpPanelState extends State<_SignUpPanel> {
         const SizedBox(height: 24),
         Center(
           child: ElevatedButton(
-            onPressed: _signUp,
+            onPressed: _isLoading ? null : _signUp,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF5B4FFF),
               foregroundColor: Colors.white,
