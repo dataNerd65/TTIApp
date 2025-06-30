@@ -67,6 +67,15 @@ class _SignUpPanelState extends State<_SignUpPanel> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  bool _isLoading = false;
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   bool _isPasswordValid(String password) {
     final regex = RegExp(
@@ -76,31 +85,60 @@ class _SignUpPanelState extends State<_SignUpPanel> {
   }
 
   Future<void> _signUp() async {
+    if (_isLoading) return;
+    setState(() => _isLoading = true);
+
+    final username = _usernameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final confirmPassword = _confirmPasswordController.text;
+
+    if (username.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
+      setState(() => _isLoading = false);
+      return;
+    }
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
+      setState(() => _isLoading = false);
       return;
     }
-    if (!_isPasswordValid(_passwordController.text)) {
+    if (!_isPasswordValid(password)) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Weak Password')));
+      setState(() => _isLoading = false);
       return;
     }
     try {
+      final usernameQuery =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .where('username', isEqualTo: username)
+              .limit(1)
+              .get();
+
+      if (usernameQuery.docs.isNotEmpty) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Username already taken')));
+        setState(() => _isLoading = false);
+        return;
+      }
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim(),
-          );
+          .createUserWithEmailAndPassword(email: email, password: password);
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user!.uid)
-          .set({
-            'email': _emailController.text.trim(),
-            'username': _usernameController.text.trim(),
-          });
+          .set({'email': email, 'username': username});
+
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Account created! Please log in.')),
@@ -112,9 +150,21 @@ class _SignUpPanelState extends State<_SignUpPanel> {
         MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.message ?? 'Sign up failed!')));
+      String msg = 'Sign up failed!';
+      if (e.code == 'email-already-in-use') {
+        msg = 'Email already in use';
+      } else if (e.code == 'invalid-email') {
+        msg = 'Invalid email address';
+      } else if (e.code == 'weak-password') {
+        msg = 'Password is too weak';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occured. Please try again.')),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
