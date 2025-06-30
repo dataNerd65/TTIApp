@@ -143,12 +143,14 @@ class _SignUpPanelState extends State<_SignUpPanel> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Account created! Please log in.')),
       );
-      await Future.delayed(const Duration(milliseconds: 700));
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
+      Future.microtask(() {
+        if (!mounted) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      });
+
       return;
     } on FirebaseAuthException catch (e) {
       String msg = 'Sign up failed!';
@@ -301,26 +303,26 @@ class _SocialSignUpButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _SocialButton(
+        _SocialLink(
           asset: 'assets/google.svg',
           text: 'Sign up with Google',
-          onPressed: () {
+          onTap: () {
             // TODO: Implement Google sign up logic
           },
         ),
-        const SizedBox(height: 12),
-        _SocialButton(
+        const SizedBox(height: 10),
+        _SocialLink(
           asset: 'assets/microsoft.svg',
           text: 'Sign up with Microsoft',
-          onPressed: () {
+          onTap: () {
             // TODO: Implement Microsoft sign up logic
           },
         ),
-        const SizedBox(height: 12),
-        _SocialButton(
+        const SizedBox(height: 10),
+        _SocialLink(
           asset: 'assets/apple.svg',
           text: 'Sign up with Apple',
-          onPressed: () {
+          onTap: () {
             // TODO: Implement Apple sign up logic
           },
         ),
@@ -329,35 +331,35 @@ class _SocialSignUpButtons extends StatelessWidget {
   }
 }
 
-class _SocialButton extends StatelessWidget {
+class _SocialLink extends StatelessWidget {
   final String asset;
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback onTap;
 
-  const _SocialButton({
+  const _SocialLink({
     required this.asset,
     required this.text,
-    required this.onPressed,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: onPressed,
-      icon: SvgPicture.asset(asset, height: 24, width: 24),
-      label: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      style: OutlinedButton.styleFrom(
-        minimumSize: const Size(double.infinity, 48),
-        side: const BorderSide(color: Colors.black12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        backgroundColor: Colors.white,
-        alignment: Alignment.centerLeft,
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(asset, height: 24, width: 24),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ],
       ),
     );
   }
