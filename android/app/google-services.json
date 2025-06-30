@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "791263528694",
+    "project_id": "faith-path-m0fng",
+    "storage_bucket": "faith-path-m0fng.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791263528694:android:37ca58207484f48a564ed7",
+        "android_client_info": {
+          "package_name": "com.example.tti_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaIgUzxwYOLPq_5sTarh6L2LCgKUj9knw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
