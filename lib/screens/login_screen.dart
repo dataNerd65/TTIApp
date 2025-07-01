@@ -138,26 +138,18 @@ class _LoginPanelState extends State<_LoginPanel> {
             ),
           ],
         ),
-        const SizedBox(height: 20),
-        TextField(
+        RoundedTextField(
+          icon: Icons.email,
+          label: 'Email',
           controller: _emailController,
-          decoration: InputDecoration(
-            labelText: 'Email',
-            prefixIcon: Icon(Icons.email),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          ),
         ),
         const SizedBox(height: 20),
-        TextField(
+        RoundedTextField(
+          icon: Icons.lock,
+          label: 'Password',
           controller: _passwordController,
           obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            prefixIcon: Icon(Icons.lock),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          ),
         ),
-        const SizedBox(height: 20),
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(

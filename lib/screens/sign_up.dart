@@ -188,26 +188,26 @@ class _SignUpPanelState extends State<_SignUpPanel> {
           ],
         ),
         const SizedBox(height: 24),
-        _RoundedTextField(
+        RoundedTextField(
           icon: Icons.person,
           label: 'Username',
           controller: _usernameController,
         ),
         const SizedBox(height: 16),
-        _RoundedTextField(
+        RoundedTextField(
           icon: Icons.email,
           label: 'Email',
           controller: _emailController,
         ),
         const SizedBox(height: 16),
-        _RoundedTextField(
+        RoundedTextField(
           icon: Icons.lock,
           label: 'Password',
           controller: _passwordController,
           obscureText: true,
         ),
         const SizedBox(height: 16),
-        _RoundedTextField(
+        RoundedTextField(
           icon: Icons.lock,
           label: 'Confirm Password',
           controller: _confirmPasswordController,
@@ -266,13 +266,13 @@ class _SignUpPanelState extends State<_SignUpPanel> {
   }
 }
 
-class _RoundedTextField extends StatelessWidget {
+class RoundedTextField extends StatelessWidget {
   final IconData icon;
   final String label;
   final bool obscureText;
   final TextEditingController controller;
 
-  const _RoundedTextField({
+  const RoundedTextField({
     required this.icon,
     required this.label,
     required this.controller,
@@ -281,17 +281,29 @@ class _RoundedTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: const Color(0xFFF5F3FF),
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        style: const TextStyle(fontSize: 16),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: const Color(0xFFF5F3FF),
+          labelText: label,
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
+          ),
+          prefixIcon: Icon(icon, color: Colors.deepPurple),
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 18,
+            horizontal: 16,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
