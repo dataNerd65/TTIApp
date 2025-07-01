@@ -95,7 +95,7 @@ class _LoginPanelState extends State<_LoginPanel> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    
+
     if (_isLoading) return;
     setState(() => _isLoading = true);
     try {
@@ -121,9 +121,9 @@ class _LoginPanelState extends State<_LoginPanel> {
       } else if (e.code == 'invalid-email') {
         message = 'Invalid email address.';
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -226,27 +226,35 @@ class _LoginPanelState extends State<_LoginPanel> {
             ),
           ),
         ),
-        ElevatedButton(
-          onPressed: _isLoading ? null : _login,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.deepPurple,
-            foregroundColor: Colors.white,
-            textStyle: const TextStyle(fontWeight: FontWeight.bold),
-            minimumSize: const Size(double.infinity, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        Center(
+          child: ElevatedButton(
+            onPressed: _isLoading ? null : _login,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF5B4FFF),
+              foregroundColor: Colors.white,
+              textStyle: const TextStyle(fontWeight: FontWeight.bold),
+              minimumSize: const Size(160, 48),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 4,
+              shadowColor: Colors.deepPurpleAccent,
             ),
+            child:
+                _isLoading
+                    ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                    : const Text(
+                      'Login Now',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
           ),
-          child: _isLoading
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                )
-              : const Text('Login Now'),
         ),
         const SizedBox(height: 20),
         Row(
@@ -341,7 +349,9 @@ class _LoginPanelState extends State<_LoginPanel> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const SignUpPage()),
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpPage(),
+                          ),
                         );
                       },
                       child: const Text(
