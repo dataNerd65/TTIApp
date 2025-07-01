@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tti_app/screens/sign_up.dart';
 import 'package:tti_app/screens/dashboard1.dart';
+import 'package:tti_app/widgets/rounded_text_field.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'dashboard1.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -59,10 +59,45 @@ class _LoginPanel extends StatefulWidget {
 }
 
 class _LoginPanelState extends State<_LoginPanel> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    }
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    return null;
+  }
 
   Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    
+    if (_isLoading) return;
+    setState(() => _isLoading = true);
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
@@ -71,15 +106,31 @@ class _LoginPanelState extends State<_LoginPanel> {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Dashboard1()),
+        MaterialPageRoute(builder: (context) => const Dashboard1()),
       );
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Login successful!')));
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.message ?? 'Login failed!')));
+      if (!mounted) return;
+      String message = 'Login failed!';
+      if (e.code == 'user-not-found') {
+        message = 'No user found with this email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Wrong password provided.';
+      } else if (e.code == 'invalid-email') {
+        message = 'Invalid email address.';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An error occurred. Please try again.')),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -109,7 +160,7 @@ class _LoginPanelState extends State<_LoginPanel> {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Dashboard1()),
+        MaterialPageRoute(builder: (context) => const Dashboard1()),
       );
       ScaffoldMessenger.of(
         context,
@@ -138,23 +189,33 @@ class _LoginPanelState extends State<_LoginPanel> {
             ),
           ],
         ),
-        RoundedTextField(
-          icon: Icons.email,
-          label: 'Email',
-          controller: _emailController,
-        ),
-        const SizedBox(height: 20),
-        RoundedTextField(
-          icon: Icons.lock,
-          label: 'Password',
-          controller: _passwordController,
-          obscureText: true,
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              RoundedTextField(
+                icon: Icons.email,
+                label: 'Email',
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: _validateEmail,
+              ),
+              const SizedBox(height: 20),
+              RoundedTextField(
+                icon: Icons.lock,
+                label: 'Password',
+                controller: _passwordController,
+                obscureText: true,
+                validator: _validatePassword,
+              ),
+            ],
+          ),
         ),
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () {
-              print('Forgot Password Tapped');
+              // TODO: Implement forgot password functionality
             },
             child: const Text(
               'Forgot Password?',
@@ -166,7 +227,7 @@ class _LoginPanelState extends State<_LoginPanel> {
           ),
         ),
         ElevatedButton(
-          onPressed: _login,
+          onPressed: _isLoading ? null : _login,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.deepPurple,
             foregroundColor: Colors.white,
@@ -176,7 +237,16 @@ class _LoginPanelState extends State<_LoginPanel> {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: const Text('Login Now'),
+          child: _isLoading
+              ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+              : const Text('Login Now'),
         ),
         const SizedBox(height: 20),
         Row(
@@ -191,10 +261,7 @@ class _LoginPanelState extends State<_LoginPanel> {
                 ),
                 const SizedBox(height: 10),
                 GestureDetector(
-                  onTap: () {
-                    print('Google link clicked!');
-                    _loginWithGoogle();
-                  },
+                  onTap: _loginWithGoogle,
                   child: Row(
                     children: [
                       SvgPicture.asset(
@@ -217,7 +284,7 @@ class _LoginPanelState extends State<_LoginPanel> {
                 const SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
-                    print('Microsoft link clicked!');
+                    // TODO: Implement Microsoft login
                   },
                   child: Row(
                     children: [
@@ -241,7 +308,7 @@ class _LoginPanelState extends State<_LoginPanel> {
                 const SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
-                    print('Apple link clicked!');
+                    // TODO: Implement Apple login
                   },
                   child: Row(
                     children: [
@@ -272,10 +339,9 @@ class _LoginPanelState extends State<_LoginPanel> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        print('Sign up link clicked');
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SignUpPage()),
+                          MaterialPageRoute(builder: (context) => const SignUpPage()),
                         );
                       },
                       child: const Text(

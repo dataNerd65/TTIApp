@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../widgets/rounded_text_field.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -62,6 +63,7 @@ class _SignUpPanel extends StatefulWidget {
 }
 
 class _SignUpPanelState extends State<_SignUpPanel> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -77,46 +79,70 @@ class _SignUpPanelState extends State<_SignUpPanel> {
     super.dispose();
   }
 
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a username';
+    }
+    if (value.length < 3) {
+      return 'Username must be at least 3 characters';
+    }
+    if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
+      return 'Username can only contain letters, numbers, and underscores';
+    }
+    return null;
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    }
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a password';
+    }
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    if (!_isPasswordValid(value)) {
+      return 'Password must contain uppercase, lowercase, number, and special character';
+    }
+    return null;
+  }
+
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (value != _passwordController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
   bool _isPasswordValid(String password) {
     final regex = RegExp(
-      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\d)(?=.*\d)(?=.*[!@#\$&*~]).{8,}$',
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$\&*~]).{8,}$',
     );
     return regex.hasMatch(password);
   }
 
   Future<void> _signUp() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    
     if (_isLoading) return;
     setState(() => _isLoading = true);
 
     final username = _usernameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
-    final confirmPassword = _confirmPasswordController.text;
-
-    if (username.isEmpty ||
-        email.isEmpty ||
-        password.isEmpty ||
-        confirmPassword.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
-      setState(() => _isLoading = false);
-      return;
-    }
-    if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Passwords do not match')));
-      setState(() => _isLoading = false);
-      return;
-    }
-    if (!_isPasswordValid(password)) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Weak Password')));
-      setState(() => _isLoading = false);
-      return;
-    }
     try {
       final usernameQuery =
           await FirebaseFirestore.instance
@@ -178,9 +204,9 @@ class _SignUpPanelState extends State<_SignUpPanel> {
       children: [
         Image.asset('assets/logo.png', height: 100),
         const SizedBox(height: 24),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Text(
               'SIGN UP',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -188,30 +214,42 @@ class _SignUpPanelState extends State<_SignUpPanel> {
           ],
         ),
         const SizedBox(height: 24),
-        RoundedTextField(
-          icon: Icons.person,
-          label: 'Username',
-          controller: _usernameController,
-        ),
-        const SizedBox(height: 16),
-        RoundedTextField(
-          icon: Icons.email,
-          label: 'Email',
-          controller: _emailController,
-        ),
-        const SizedBox(height: 16),
-        RoundedTextField(
-          icon: Icons.lock,
-          label: 'Password',
-          controller: _passwordController,
-          obscureText: true,
-        ),
-        const SizedBox(height: 16),
-        RoundedTextField(
-          icon: Icons.lock,
-          label: 'Confirm Password',
-          controller: _confirmPasswordController,
-          obscureText: true,
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              RoundedTextField(
+                icon: Icons.person,
+                label: 'Username',
+                controller: _usernameController,
+                validator: _validateUsername,
+              ),
+              const SizedBox(height: 16),
+              RoundedTextField(
+                icon: Icons.email,
+                label: 'Email',
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                validator: _validateEmail,
+              ),
+              const SizedBox(height: 16),
+              RoundedTextField(
+                icon: Icons.lock,
+                label: 'Password',
+                controller: _passwordController,
+                obscureText: true,
+                validator: _validatePassword,
+              ),
+              const SizedBox(height: 16),
+              RoundedTextField(
+                icon: Icons.lock,
+                label: 'Confirm Password',
+                controller: _confirmPasswordController,
+                obscureText: true,
+                validator: _validateConfirmPassword,
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 24),
         Center(
@@ -227,10 +265,19 @@ class _SignUpPanelState extends State<_SignUpPanel> {
               elevation: 4,
               shadowColor: Colors.deepPurpleAccent,
             ),
-            child: const Text(
-              'Sign Up',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            child: _isLoading
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : const Text(
+                    'Sign Up',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
           ),
         ),
         const SizedBox(height: 24),
@@ -266,49 +313,6 @@ class _SignUpPanelState extends State<_SignUpPanel> {
   }
 }
 
-class RoundedTextField extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool obscureText;
-  final TextEditingController controller;
-
-  const RoundedTextField({
-    required this.icon,
-    required this.label,
-    required this.controller,
-    this.obscureText = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        style: const TextStyle(fontSize: 16),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: const Color(0xFFF5F3FF),
-          labelText: label,
-          labelStyle: const TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
-          prefixIcon: Icon(icon, color: Colors.deepPurple),
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 18,
-            horizontal: 16,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _SocialSignUpButtons extends StatelessWidget {
   @override

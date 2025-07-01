@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
+import 'screens/dashboard1.dart';
 import 'firebase_options.dart';
-//import 'screens/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,8 +26,7 @@ class TimothyApp extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasData) {
-            print('testing good!');
-            //return const HomeScreen();
+            return const Dashboard1();
           }
           return const LoginPage();
         },

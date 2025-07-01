@@ -73,6 +73,7 @@ flutter:
   # the material Icons class.
   assets:
     - assets/logo.png
+    - assets/globe.png
     - assets/google.svg
     - assets/facebook.svg
     - assets/apple.svg
