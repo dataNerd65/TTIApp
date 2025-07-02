@@ -4,6 +4,11 @@ import 'login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/rounded_text_field.dart';
+import '../widgets/social_login_link.dart';
+import '../widgets/auth_logo.dart';
+import '../widgets/auth_title.dart';
+import '../widgets/auth_redirect_row.dart';
+import '../widgets/social_login_column.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -136,7 +141,7 @@ class _SignUpPanelState extends State<_SignUpPanel> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    
+
     if (_isLoading) return;
     setState(() => _isLoading = true);
 
@@ -202,17 +207,9 @@ class _SignUpPanelState extends State<_SignUpPanel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.asset('assets/logo.png', height: 100),
+        const AuthLogo(),
         const SizedBox(height: 24),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'SIGN UP',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
+        const AuthTitle(title: 'SIGN UP'),
         const SizedBox(height: 24),
         Form(
           key: _formKey,
@@ -265,118 +262,60 @@ class _SignUpPanelState extends State<_SignUpPanel> {
               elevation: 4,
               shadowColor: Colors.deepPurpleAccent,
             ),
-            child: _isLoading
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            child:
+                _isLoading
+                    ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                    : const Text(
+                      'Sign Up',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  )
-                : const Text(
-                    'Sign Up',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
           ),
         ),
         const SizedBox(height: 24),
-        _SocialSignUpButtons(),
-        const SizedBox(height: 24),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Already have an account? ",
-              style: TextStyle(color: Colors.black),
-            ),
-            GestureDetector(
+        SocialLoginColumn(
+          links: [
+            SocialLoginLink(
+              asset: 'assets/google.svg',
+              text: 'Sign up with Google',
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
+                // TODO: Implement Google sign up logic
               },
-              child: const Text(
-                "Go back to login.",
-                style: TextStyle(
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            ),
+            SocialLoginLink(
+              asset: 'assets/microsoft.svg',
+              text: 'Sign up with Microsoft',
+              onTap: () {
+                // TODO: Implement Microsoft sign up logic
+              },
+            ),
+            SocialLoginLink(
+              asset: 'assets/apple.svg',
+              text: 'Sign up with Apple',
+              onTap: () {
+                // TODO: Implement Apple sign up logic
+              },
             ),
           ],
         ),
-      ],
-    );
-  }
-}
-
-
-class _SocialSignUpButtons extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _SocialLink(
-          asset: 'assets/google.svg',
-          text: 'Sign up with Google',
+        const SizedBox(height: 24),
+        AuthRedirectRow(
+          promptText: 'Already have an account? ',
+          actionText: 'Go back to login.',
           onTap: () {
-            // TODO: Implement Google sign up logic
-          },
-        ),
-        const SizedBox(height: 10),
-        _SocialLink(
-          asset: 'assets/microsoft.svg',
-          text: 'Sign up with Microsoft',
-          onTap: () {
-            // TODO: Implement Microsoft sign up logic
-          },
-        ),
-        const SizedBox(height: 10),
-        _SocialLink(
-          asset: 'assets/apple.svg',
-          text: 'Sign up with Apple',
-          onTap: () {
-            // TODO: Implement Apple sign up logic
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            );
           },
         ),
       ],
-    );
-  }
-}
-
-class _SocialLink extends StatelessWidget {
-  final String asset;
-  final String text;
-  final VoidCallback onTap;
-
-  const _SocialLink({
-    required this.asset,
-    required this.text,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(asset, height: 24, width: 24),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: const TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-              decoration: TextDecoration.underline,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
