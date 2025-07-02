@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tti_app/screens/sign_up.dart';
 import 'package:tti_app/screens/dashboard1.dart';
 import 'package:tti_app/widgets/rounded_text_field.dart';
+import 'package:tti_app/widgets/social_login_link.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatelessWidget {
@@ -268,74 +269,26 @@ class _LoginPanelState extends State<_LoginPanel> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-                GestureDetector(
+                SocialLoginLink(
+                  asset: 'assets/google.svg',
+                  text: 'Login with Google',
                   onTap: _loginWithGoogle,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/google.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Login with Google',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
                 const SizedBox(height: 10),
-                GestureDetector(
+                SocialLoginLink(
+                  asset: 'assets/microsoft.svg',
+                  text: 'Login with Microsoft',
                   onTap: () {
                     // TODO: Implement Microsoft login
                   },
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/microsoft.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Login with Microsoft',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
                 const SizedBox(height: 10),
-                GestureDetector(
+                SocialLoginLink(
+                  asset: 'assets/apple.svg',
+                  text: 'Login with Apple',
                   onTap: () {
                     // TODO: Implement Apple login
                   },
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/apple.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Login With Apple',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
                 const SizedBox(height: 20),
                 Row(
