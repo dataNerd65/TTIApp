@@ -23,7 +23,7 @@ class UniversalButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          foregroundColor: Colors.black,
+          foregroundColor: const Color.fromARGB(255, 0, 0, 0),
           padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           elevation: 0,
