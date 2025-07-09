@@ -165,10 +165,14 @@ class _SignUpPanelState extends State<_SignUpPanel> {
       }
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+
+      await userCredential.user!.updateDisplayName(username);
+
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user!.uid)
           .set({'email': email, 'username': username});
+      print('Saved username: $username');
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
