@@ -40,7 +40,7 @@ class _DashboardPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    final username = user?.displayName ?? user?.email ?? "User";
+    final username = user?.displayName ?? user?.displayName ?? "User";
 
     return Container(
       color: const Color(0xFFF5F3FF),
@@ -83,54 +83,61 @@ class _DashboardPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          UniversalButton(
-            text: 'Daily Scipture',
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                UniversalButton(
+                  text: 'Daily Scipture',
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  width: double.infinity,
+                  onPressed: () {},
+                ),
+                const SizedBox(height: 12),
+                UniversalButton(
+                  text: 'Prayer Checklist',
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  width: double.infinity,
+                  onPressed: () {},
+                ),
+                const SizedBox(height: 12),
+                UniversalButton(
+                  text: 'Read the Bible',
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  width: double.infinity,
+                  onPressed: () {},
+                ),
+                const SizedBox(height: 12),
+                UniversalButton(
+                  text: 'Accountability Check-ins',
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  width: double.infinity,
+                  onPressed: () {},
+                ),
+                const SizedBox(height: 12),
+                UniversalButton(
+                  text: 'Discipleship Modules',
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  width: double.infinity,
+                  onPressed: () {},
+                ),
+              ],
             ),
-            width: double.infinity,
-            onPressed: () {}, // to handle later
-          ),
-          const SizedBox(height: 12),
-          UniversalButton(
-            text: 'Prayer Checklist',
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-            ),
-            width: double.infinity,
-            onPressed: () {}, // to handle later
-          ),
-          const SizedBox(height: 32),
-          UniversalButton(
-            text: 'Read the Bible',
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-            ),
-            width: double.infinity,
-            onPressed: () {}, // to handle later
-          ),
-          const SizedBox(height: 32),
-          UniversalButton(
-            text: 'Accountability Check-ins',
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-            ),
-            width: double.infinity,
-            onPressed: () {}, // to handle later
-          ),
-          const SizedBox(height: 32),
-          UniversalButton(
-            text: 'Discipleship Modules',
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-            ),
-            width: double.infinity,
-            onPressed: () {}, // to handle later
           ),
         ],
       ),
