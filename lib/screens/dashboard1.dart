@@ -57,31 +57,53 @@ class _DashboardPanel extends StatelessWidget {
                     // Greeting at top left
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 8,
+                        horizontal: 14,
+                        vertical: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF63C2E7),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        'Hello $username!',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                    // Logout button at top right
-                    IconButton(
-                      onPressed: onLogout,
-                      icon: const Icon(
-                        Icons.logout,
                         color: Colors.deepPurple,
-                        size: 24,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.deepPurple.withOpacity(0.15),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      tooltip: 'Logout',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.waving_hand,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Hello $username!',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                          // Logout button at top right
+                          IconButton(
+                            onPressed: onLogout,
+                            icon: const Icon(
+                              Icons.logout,
+                              color: Colors.deepPurple,
+                              size: 24,
+                            ),
+                            tooltip: 'Logout',
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
