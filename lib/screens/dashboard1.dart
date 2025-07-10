@@ -44,37 +44,40 @@ class _DashboardPanel extends StatelessWidget {
 
     return Container(
       color: const Color(0xFFF5F3FF),
-      child: Stack(
-        children: [
-          // Main content column
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Greeting at top left
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple,
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.deepPurple.withOpacity(0.15),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
+      child: SafeArea(
+        child: Column(
+          children: [
+            // Main content scrollable
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Top section: Greeting and logout
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 16,
+                      left: 24,
+                      right: 24,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 10,
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.deepPurple.withOpacity(0.15),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
                             children: [
                               const Icon(
                                 Icons.waving_hand,
@@ -92,107 +95,103 @@ class _DashboardPanel extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // Logout button at top right
-                          IconButton(
-                            onPressed: onLogout,
-                            icon: const Icon(
-                              Icons.logout,
-                              color: Colors.deepPurple,
-                              size: 24,
-                            ),
-                            tooltip: 'Logout',
+                        ),
+                        IconButton(
+                          onPressed: onLogout,
+                          icon: const Icon(
+                            Icons.logout,
+                            color: Colors.deepPurple,
+                            size: 24,
                           ),
-                        ],
-                      ),
+                          tooltip: 'Logout',
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    UniversalButton(
-                      text: 'Daily Scipture',
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      width: double.infinity,
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 12),
-                    UniversalButton(
-                      text: 'Prayer Checklist',
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      width: double.infinity,
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 12),
-                    UniversalButton(
-                      text: 'Read the Bible',
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      width: double.infinity,
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 12),
-                    UniversalButton(
-                      text: 'Accountability Check-ins',
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      width: double.infinity,
-                      onPressed: () {},
-                    ),
-                    const SizedBox(height: 12),
-                    UniversalButton(
-                      text: 'Discipleship Modules',
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      width: double.infinity,
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              // Leave space for profile at the bottom
-              const SizedBox(height: 70),
-            ],
-          ),
-          // Profile section at bottom left
-          Positioned(
-            left: 24,
-            bottom: 24,
-            child: Row(
-              children: [
-                const CircleAvatar(
-                  radius: 22,
-                  backgroundColor: Colors.deepPurple,
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  username,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        UniversalButton(
+                          text: 'Daily Scripture',
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          width: double.infinity,
+                          onPressed: () {},
+                        ),
+                        const SizedBox(height: 12),
+                        UniversalButton(
+                          text: 'Prayer Checklist',
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          width: double.infinity,
+                          onPressed: () {},
+                        ),
+                        const SizedBox(height: 12),
+                        UniversalButton(
+                          text: 'Read the Bible',
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          width: double.infinity,
+                          onPressed: () {},
+                        ),
+                        const SizedBox(height: 12),
+                        UniversalButton(
+                          text: 'Accountability Check-ins',
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          width: double.infinity,
+                          onPressed: () {},
+                        ),
+                        const SizedBox(height: 12),
+                        UniversalButton(
+                          text: 'Discipleship Modules',
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          width: double.infinity,
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 80), // Add space for profile at bottom
+                ],
+              ),
             ),
-          ),
-        ],
+            // Bottom section: Profile
+            Padding(
+              padding: const EdgeInsets.only(left: 24, bottom: 24, top: 8),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 22,
+                    backgroundColor: Colors.deepPurple,
+                    child: Icon(Icons.person, color: Colors.white),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    username,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
