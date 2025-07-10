@@ -149,12 +149,15 @@ class _SignUpPanelState extends State<_SignUpPanel> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     try {
+      // trobleshooting snapshot
+      print('Checking username uniqueness...');
       final usernameQuery =
           await FirebaseFirestore.instance
               .collection('users')
               .where('username', isEqualTo: username)
               .limit(1)
               .get();
+      print('Username query complete.');
 
       if (usernameQuery.docs.isNotEmpty) {
         ScaffoldMessenger.of(
@@ -163,10 +166,13 @@ class _SignUpPanelState extends State<_SignUpPanel> {
         setState(() => _isLoading = false);
         return;
       }
+      print('Creating user...');
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      print('User Created.');
 
       await userCredential.user!.updateDisplayName(username);
+      print('Display name updated.');
 
       await FirebaseFirestore.instance
           .collection('users')
