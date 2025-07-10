@@ -25,7 +25,9 @@ class UniversalButton extends StatelessWidget {
           backgroundColor: color,
           foregroundColor: const Color.fromARGB(255, 0, 0, 0),
           padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           elevation: 0,
         ),
         onPressed: onPressed ?? () {},

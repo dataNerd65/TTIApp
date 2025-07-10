@@ -40,101 +40,132 @@ class _DashboardPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    final username = user?.displayName ?? user?.displayName ?? "User";
+    final username = user?.displayName ?? "User";
 
     return Container(
       color: const Color(0xFFF5F3FF),
-      child: Column(
+      child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF63C2E7),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    'Hello $username!',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
+          // Main content column
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Greeting at top left
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF63C2E7),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        'Hello $username!',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
                     ),
-                  ),
+                    // Logout button at top right
+                    IconButton(
+                      onPressed: onLogout,
+                      icon: const Icon(
+                        Icons.logout,
+                        color: Colors.deepPurple,
+                        size: 24,
+                      ),
+                      tooltip: 'Logout',
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                IconButton(
-                  onPressed: onLogout,
-                  icon: const Icon(
-                    Icons.logout,
-                    color: Colors.deepPurple,
-                    size: 24,
-                  ),
-                  tooltip: 'Logout',
+              ),
+              const SizedBox(height: 32),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    UniversalButton(
+                      text: 'Daily Scipture',
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      width: double.infinity,
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 12),
+                    UniversalButton(
+                      text: 'Prayer Checklist',
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      width: double.infinity,
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 12),
+                    UniversalButton(
+                      text: 'Read the Bible',
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      width: double.infinity,
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 12),
+                    UniversalButton(
+                      text: 'Accountability Check-ins',
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      width: double.infinity,
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 12),
+                    UniversalButton(
+                      text: 'Discipleship Modules',
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      width: double.infinity,
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const Spacer(),
+              // Leave space for profile at the bottom
+              const SizedBox(height: 70),
+            ],
           ),
-          const SizedBox(height: 32),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
+          // Profile section at bottom left
+          Positioned(
+            left: 24,
+            bottom: 24,
+            child: Row(
               children: [
-                UniversalButton(
-                  text: 'Daily Scipture',
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  width: double.infinity,
-                  onPressed: () {},
+                const CircleAvatar(
+                  radius: 22,
+                  backgroundColor: Colors.deepPurple,
+                  child: Icon(Icons.person, color: Colors.white),
                 ),
-                const SizedBox(height: 12),
-                UniversalButton(
-                  text: 'Prayer Checklist',
-                  textStyle: const TextStyle(
+                const SizedBox(width: 10),
+                Text(
+                  username,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
+                    color: Colors.deepPurple,
                   ),
-                  width: double.infinity,
-                  onPressed: () {},
-                ),
-                const SizedBox(height: 12),
-                UniversalButton(
-                  text: 'Read the Bible',
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  width: double.infinity,
-                  onPressed: () {},
-                ),
-                const SizedBox(height: 12),
-                UniversalButton(
-                  text: 'Accountability Check-ins',
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  width: double.infinity,
-                  onPressed: () {},
-                ),
-                const SizedBox(height: 12),
-                UniversalButton(
-                  text: 'Discipleship Modules',
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  width: double.infinity,
-                  onPressed: () {},
                 ),
               ],
             ),
