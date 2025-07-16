@@ -204,6 +204,7 @@ class _SignUpPanelState extends State<_SignUpPanel> {
       }
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
     } catch (e) {
+      print('Firestore write error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('An error occured. Please try again.')),
       );
