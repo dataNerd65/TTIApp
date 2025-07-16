@@ -59,60 +59,70 @@ class _DashboardPanel extends StatelessWidget {
                       child: UniversalButton(
                         text: 'Daily Scripture',
                         textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           fontStyle: FontStyle.italic,
+                          fontSize: 22,
+                          letterSpacing: 0.5,
                         ),
                         width: double.infinity,
                         onPressed: () {},
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 32),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: UniversalButton(
                         text: 'Prayer Checklist',
                         textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           fontStyle: FontStyle.italic,
+                          fontSize: 22,
+                          letterSpacing: 0.5,
                         ),
                         width: double.infinity,
                         onPressed: () {},
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 32),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: UniversalButton(
                         text: 'Read the Bible',
                         textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           fontStyle: FontStyle.italic,
+                          fontSize: 22,
+                          letterSpacing: 0.5,
                         ),
                         width: double.infinity,
                         onPressed: () {},
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 32),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: UniversalButton(
                         text: 'Accountability Check-ins',
                         textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           fontStyle: FontStyle.italic,
+                          fontSize: 22,
+                          letterSpacing: 0.5,
                         ),
                         width: double.infinity,
                         onPressed: () {},
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 32),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: UniversalButton(
                         text: 'Discipleship Modules',
                         textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           fontStyle: FontStyle.italic,
+                          fontSize: 22,
+                          letterSpacing: 0.5,
                         ),
                         width: double.infinity,
                         onPressed: () {},
@@ -132,11 +142,12 @@ class _DashboardPanel extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
-              color: Colors.deepPurple,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: Colors.deepPurple, width: 2),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.deepPurple.withOpacity(0.15),
+                  color: Colors.deepPurple,
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -149,8 +160,8 @@ class _DashboardPanel extends StatelessWidget {
                 Text(
                   'Hello $username!',
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontWeight: FontWeight.w900,
                     fontSize: 18,
                   ),
                 ),
@@ -172,22 +183,18 @@ class _DashboardPanel extends StatelessWidget {
         Positioned(
           left: 24,
           bottom: 24,
-          child: Row(
-            children: [
-              const CircleAvatar(
-                radius: 22,
-                backgroundColor: Colors.deepPurple,
-                child: Icon(Icons.person, color: Colors.white),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                username,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
+          child: Tooltip(
+            message: 'View profile',
+            child: Row(
+              children: [
+                const CircleAvatar(
+                  radius: 22,
+                  backgroundColor: Colors.deepPurple,
+                  child: Icon(Icons.person, color: Colors.white),
                 ),
-              ),
-            ],
+                const SizedBox(width: 10),
+              ],
+            ),
           ),
         ),
       ],
