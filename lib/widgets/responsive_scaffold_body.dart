@@ -23,14 +23,12 @@ class ResponsiveScaffoldBody extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 700) {
-          // Mobile layout: stack vertically
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(padding: padding!, child: child),
-                sideChild ?? Container(height: 200, color: sideColor),
-              ],
-            ),
+          // Mobile layout: only show main content, fill screen
+          return Container(
+            color: Colors.white,
+            width: double.infinity,
+            height: double.infinity,
+            child: Padding(padding: padding!, child: child),
           );
         } else {
           // Desktop/tablet: side by side
