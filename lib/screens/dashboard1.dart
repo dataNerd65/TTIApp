@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/responsive_scaffold_body.dart';
+import '../screens/daily_scripture_page.dart';
 
 class Dashboard1 extends StatelessWidget {
   const Dashboard1({super.key});
@@ -170,6 +171,12 @@ class _DashboardPanel extends StatelessWidget {
                 const Color(0xFF4ECDC4),
                 () {
                   // Navigate to Daily Scripture
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DailyScripturePage(),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 12),
