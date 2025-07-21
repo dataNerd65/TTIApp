@@ -25,7 +25,7 @@ class ResponsiveScaffoldBody extends StatelessWidget {
         if (constraints.maxWidth < 700) {
           // Mobile layout: only show main content, fill screen
           return Container(
-            color: Colors.white,
+            color: const Color(0xFF1E1E1E),
             width: double.infinity,
             height: double.infinity,
             child: Padding(padding: padding!, child: child),
