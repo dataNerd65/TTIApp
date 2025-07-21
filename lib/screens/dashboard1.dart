@@ -83,7 +83,7 @@ class _DashboardPanel extends StatelessWidget {
                   IconButton(
                     onPressed: onLogout,
                     icon: const Icon(
-                      Icons.settings,
+                      Icons.logout,
                       color: Colors.white70,
                       size: 24,
                     ),
