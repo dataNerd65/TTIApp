@@ -7,7 +7,7 @@ class UniversalButton extends StatelessWidget {
     required this.textStyle,
     this.onPressed,
     this.width = 280,
-    this.color = const Color(0xFF5B4FFF), // light‑blue from screenshot
+    this.color = const Color(0xFF00A0E0),
   });
 
   final String text;
@@ -23,7 +23,7 @@ class UniversalButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+          foregroundColor: const Color.fromARGB(255, 0, 0, 0),
           padding: const EdgeInsets.symmetric(vertical: 22),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
