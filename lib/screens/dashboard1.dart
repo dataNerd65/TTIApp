@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/responsive_scaffold_body.dart';
 import '../screens/daily_scripture_page.dart';
+import '../screens/prayer_checklist_page.dart';
 
 class Dashboard1 extends StatelessWidget {
   const Dashboard1({super.key});
@@ -187,7 +188,12 @@ class _DashboardPanel extends StatelessWidget {
                 Icons.favorite,
                 const Color(0xFFE91E63),
                 () {
-                  // Navigate to Prayer Checklist
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrayerChecklistPage(),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 12),
