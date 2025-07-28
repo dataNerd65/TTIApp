@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/responsive_scaffold_body.dart';
 import '../screens/daily_scripture_page.dart';
 import '../screens/prayer_checklist_page.dart';
+import '../screens/read_the_bible_page.dart';
+import '../screens/accountability_check_ins.dart';
 
 class Dashboard1 extends StatelessWidget {
   const Dashboard1({super.key});
@@ -204,7 +206,12 @@ class _DashboardPanel extends StatelessWidget {
                 Icons.book,
                 const Color(0xFF4CAF50),
                 () {
-                  // Navigate to Bible Reading
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ReadBiblePage(),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 12),
@@ -215,7 +222,12 @@ class _DashboardPanel extends StatelessWidget {
                 Icons.group,
                 const Color(0xFF9C27B0),
                 () {
-                  // Navigate to Accountability
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AccountabilityPage(),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 12),
